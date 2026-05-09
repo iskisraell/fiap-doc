@@ -207,6 +207,13 @@ class FIAPPDF:
 
         p.set_auto_page_break(auto=True, margin=25)
 
+    def _add_image(self, image_path, max_w=170, max_h=100):
+        p = self.pdf
+        if p.get_y() + 30 > 265:
+            p.add_page()
+        p.image(image_path, w=max_w, h=max_h)
+        p.ln(4)
+
     # --- Recursive section renderer ----------------------------------------
 
     def _render_section(self, section):
@@ -231,6 +238,11 @@ class FIAPPDF:
 
         for t in obj.get("tables", []):
             self._add_table(t["headers"], t["rows"], t.get("col_widths"))
+
+        for img in obj.get("images", []):
+            path = img if isinstance(img, str) else img.get("path", "")
+            if path and os.path.exists(path):
+                self._add_image(path)
 
         for sub in obj.get("subsections", []):
             self._render_subsection(sub)
@@ -377,6 +389,13 @@ class FIAPDOCX:
 
         doc.add_paragraph()
 
+    def _add_image(self, image_path, width_inches=6.5):
+        from docx.shared import Inches
+        para = self.doc.add_paragraph()
+        para.alignment = self.WD_ALIGN_PARAGRAPH.CENTER
+        run = para.add_run()
+        run.add_picture(image_path, width=Inches(width_inches))
+
     def _render_content(self, obj):
         bodies = obj.get("body", [])
         for i, text in enumerate(bodies):
@@ -391,6 +410,11 @@ class FIAPDOCX:
 
         for t in obj.get("tables", []):
             self._add_table(t["headers"], t["rows"])
+
+        for img in obj.get("images", []):
+            path = img if isinstance(img, str) else img.get("path", "")
+            if path and os.path.exists(path):
+                self._add_image(path)
 
         for sub in obj.get("subsections", []):
             self._subsection_title(sub["title"])

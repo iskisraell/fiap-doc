@@ -76,7 +76,23 @@ Key fields:
 - `title`: main title (uppercase, bold)
 - `subtitle`: array of subtitle lines
 - `meta`: array of `{label, value}` pairs for the cover page (Sala, Matéria, Grupo, Integrantes)
-- `sections`: array of section objects with `title`, optional `body`, `bullets`, `tables`, `subsections`
+- `sections`: array of section objects with `title`, optional `body`, `bullets`, `tables`, `images`, `subsections`
+
+## Inline Images
+
+Sections support an `images` field to embed screenshots, diagrams, or any image directly in the document. Each image is rendered centered and scaled to fit the page width.
+
+```json
+{
+  "title": "5. TESTES",
+  "body": ["Todos os testes passaram."],
+  "images": [
+    {"path": "C:/Users/example/Pictures/screenshot.png"}
+  ]
+}
+```
+
+Images can also be plain strings (the file path) instead of objects. Both PDF and DOCX output support inline images.
 
 ## Page Layout Behavior
 

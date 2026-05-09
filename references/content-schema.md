@@ -22,6 +22,7 @@ JSON input for `scripts/generate.py`.
 | `body` | string[] | no | Paragraph text blocks |
 | `bullets` | object[] | no | Bullet items: `{text, level}` (level 0 or 1) |
 | `tables` | object[] | no | Tables (see below) |
+| `images` | object[] | no | Inline images: `{path}` or plain string (see below) |
 | `subsections` | object[] | no | Nested sections with same structure |
 | `bold_body` | bool | no | Make first body paragraph bold |
 
@@ -47,6 +48,14 @@ JSON input for `scripts/generate.py`.
 | `label` | string | yes | Label (bold) |
 | `value` | string | yes | Value (regular) |
 
+## Image Object
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `path` | string | yes | Absolute path to image file (PNG, JPG) |
+
+Images can also be plain strings (the file path) instead of objects.
+
 ## Example
 
 ```json
@@ -66,6 +75,9 @@ JSON input for `scripts/generate.py`.
       "body": ["Paragraph one about context."],
       "bullets": [
         {"text": "First point", "level": 0}
+      ],
+      "images": [
+        {"path": "C:/Users/example/Pictures/screenshot.png"}
       ],
       "subsections": [
         {
